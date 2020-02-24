@@ -48,4 +48,10 @@ void ListReverse(List *lst);
 // 遍历列表
 void ListRetrive(List *lst);
 
+// 查找中位节点
+ListNode *ListMiddleNode(List *lst, int *idx);
+
+// 合并列表
+void MergeSortedList(List *lst1, List *lst2);
+
 #endif // !_LIST_H_

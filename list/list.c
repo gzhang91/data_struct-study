@@ -192,3 +192,69 @@ void ListRetrive(List *lst) {
 	}
 	printf("\n");
 }
+
+ListNode *ListMiddleNode(List *lst, int *idx) {
+	ListNode *fast_ptr = lst->header->next;
+	ListNode *slow_ptr = lst->header->next;
+	
+	while (fast_ptr) {
+		(*idx) ++;
+		if (fast_ptr->next && fast_ptr->next->next) {
+			fast_ptr = fast_ptr->next->next;
+		} else {
+			break;
+		}
+
+		if (slow_ptr->next) {
+			slow_ptr = slow_ptr->next;
+		} else {
+			break;
+		}
+	}
+
+	return slow_ptr;
+}
+
+void MergeSortedList(List *lst1, List *lst2) {
+	if (!lst1) {
+		printf("list is empty!\n");
+		return ;
+	}
+
+	if (!lst2) {
+		printf("list is empty!\n");
+		return ;
+	}
+
+	int i = lst1->size, j = lst2->size;
+	ListNode *lst1_node = lst1->header->next;
+	ListNode *lst2_node = lst2->header->next;
+	while (i > 0 && j > 0) {
+		if (lst1->Cmp(lst1_node->data, lst2_node->data) == 1) {
+			// 将lst2_node解开
+			lst2_node->prev->next = lst2_node->next;
+			if (lst2_node->next) {
+				lst2_node->next->prev = lst2_node->prev;
+			}
+
+			// 将lst2_node加在lst1_node上
+			ListNode *insert_pos = lst1_node->prev;
+			lst2_node->prev = insert_pos;
+			lst2_node->next = insert_pos->next;
+			insert_pos->next->prev = lst2_node;
+			insert_pos->next = lst2_node;
+
+			lst1->size ++;
+
+		} else {
+			i--; lst1_node = lst1_node->next;
+		}
+	}
+
+	if (j > 0) {
+		lst1->tailer->next = lst2->header->next;
+		lst2->header->next->prev = lst1->tailer;
+		lst1->tailer = lst2->tailer;
+		lst1->size += j;
+	}
+}

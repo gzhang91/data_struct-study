@@ -51,37 +51,58 @@ void DataVisit(void *data) {
 	printf("%04d ", dt1->data);
 }
 
-
-
 int main() {
-	List *lst = ListCreate();
-	lst->Dup = &DataDup;
-	lst->Free = &DataFree;
-	lst->Cmp = &DataCmp;
-	lst->Visit = &DataVisit;
+	List *lst1 = ListCreate();
+	lst1->Dup = &DataDup;
+	lst1->Free = &DataFree;
+	lst1->Cmp = &DataCmp;
+	lst1->Visit = &DataVisit;
 
-	Data dt1 = {1};
-	ListPushHeader(lst, &dt1);
-
-	dt1.data = 2;
-	ListPushHeader(lst, &dt1);
-
-	dt1.data = 3;
-	ListPushHeader(lst, &dt1);
-
+	Data dt1 = {9};
+	ListPushHeader(lst1, &dt1);
+	dt1.data = 6;
+	ListPushHeader(lst1, &dt1);
 	dt1.data = 4;
-	ListPushHeader(lst, &dt1);
+	ListPushHeader(lst1, &dt1);
+	dt1.data = 2;
+	ListPushHeader(lst1, &dt1);
 
-	ListRetrive(lst);
+	/*ListRetrive(lst1);
+	
+	// 查找中位节点
+	int middle_idx = 0;
+	ListNode *pos = ListMiddleNode(lst1, &middle_idx);
+	if (pos) {
+		printf("list middle point(%d), node(%p)\n", middle_idx, pos);
+	}
 
 	// 翻转
-	//ListReverse(lst);
-	ListReversePos(lst, lst->header->next->next);
+	//ListReverse(lst1);
+	ListReversePos(lst1, pos);
 
 	printf("reverse: \n");
-	ListRetrive(lst);
+	ListRetrive(lst1); */
 
-	ListRelease(lst);
+	List *lst2 = ListCreate();
+	lst2->Dup = &DataDup;
+	lst2->Free = &DataFree;
+	lst2->Cmp = &DataCmp;
+	lst2->Visit = &DataVisit;
+
+	dt1.data = 10;
+	ListPushHeader(lst2, &dt1);
+	dt1.data = 8;
+	ListPushHeader(lst2, &dt1);
+	dt1.data = 5;
+	ListPushHeader(lst2, &dt1);
+	dt1.data = 3;
+	ListPushHeader(lst2, &dt1);
+
+	MergeSortedList(lst1, lst2);
+
+	ListRetrive(lst1);
+
+	ListRelease(lst1);
 
 	return 0;
 }
