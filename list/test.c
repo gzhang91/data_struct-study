@@ -75,12 +75,13 @@ int main() {
 	ListRetrive(lst);
 
 	// 翻转
-	ListReverse(lst);
+	//ListReverse(lst);
+	ListReversePos(lst, lst->header->next->next);
 
 	printf("reverse: \n");
 	ListRetrive(lst);
 
-	//ListRelease(lst);
+	ListRelease(lst);
 
 	return 0;
 }

@@ -38,7 +38,7 @@ void ListRelease(List *lst) {
 
 	// free header
 	ListNode *header = lst->header;
-	lst->Free(header->data);
+	//lst->Free(header->data);
 	free(lst);
 }
 
@@ -117,8 +117,10 @@ ListNode* ListPop(List *lst) {
 
 	ListNode *tmp = lst->header->next;
 	lst->header->next = tmp->next;
-	tmp->next->prev = lst->header;
-
+	if (tmp->next) {
+		tmp->next->prev = lst->header;
+	}
+	
 	return tmp;
 }
 
@@ -145,13 +147,11 @@ void ListReverse(List *lst) {
 	// 拆掉头结点
 	lst->header->prev = lst->header->next = NULL;
 	lst->tailer = curr;
-	
+
 	while (curr) {
 		ListNode *tmp = curr->next;
-
 		curr->next = lst->header->next;
 		curr->prev = lst->header;
-
 		lst->header->next = curr;
 		curr = tmp;
 	}
@@ -164,11 +164,16 @@ void ListReversePos(List *lst, ListNode *pos) {
 	}
 
 	ListNode *curr = pos->next;
+
+	// 拆掉头结点
+	pos->next = NULL;
+	lst->tailer = curr;
+
 	while (curr) {
 		ListNode *tmp = curr->next;
-		curr->next = lst->header->next;
-		curr->prev = lst->header;
-		lst->header->next = curr;
+		curr->next = pos->next;
+		curr->prev = pos;
+		pos->next = curr;
 		curr = tmp;
 	}
 }
