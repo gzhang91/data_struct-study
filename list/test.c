@@ -101,6 +101,20 @@ int main() {
 	MergeSortedList(lst1, lst2);
 
 	ListRetrive(lst1);
+	
+	// 查找中位节点
+	// int middle_idx = 0;
+	// ListNode *pos = ListMiddleNode(lst1, &middle_idx);
+	// if (pos) {
+	// 	printf("list middle point(%d), node(%p)\n", middle_idx, pos);
+	// }
+
+	// 翻转
+	ListReverse(lst1);
+	//ListReversePos(lst1, pos);
+
+	printf("reverse: \n");
+	ListRetrive(lst1); 
 
 	ListRelease(lst1);
 

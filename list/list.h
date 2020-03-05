@@ -45,6 +45,9 @@ ListNode* ListPopPos(List *lst, ListNode *pos);
 // 翻转列表
 void ListReverse(List *lst);
 
+// 从某个地方翻转
+void ListReversePos(List *lst, ListNode *pos);
+
 // 遍历列表
 void ListRetrive(List *lst);
 

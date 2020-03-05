@@ -1,5 +1,6 @@
 #include "list.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 List * ListCreate() {
 	List *lst = (List *)malloc(sizeof(List));
@@ -112,7 +113,7 @@ void ListPushPos(List *lst, ListNode *pos, void *data) {
 ListNode* ListPop(List *lst) {
 	if (!lst || lst->size <= 0) {
 		printf("list is empty!\n");
-		return ;
+		return NULL;
 	}
 
 	ListNode *tmp = lst->header->next;
@@ -127,7 +128,7 @@ ListNode* ListPop(List *lst) {
 ListNode* ListPopPos(List *lst, ListNode *pos) {
 	if (!lst) {
 		printf("list is empty!\n");
-		return ;
+		return NULL;
 	}
 
 	pos->prev->next = pos->next;
@@ -236,6 +237,7 @@ void MergeSortedList(List *lst1, List *lst2) {
 			if (lst2_node->next) {
 				lst2_node->next->prev = lst2_node->prev;
 			}
+			lst2->size --;
 
 			// 将lst2_node加在lst1_node上
 			ListNode *insert_pos = lst1_node->prev;
@@ -245,6 +247,9 @@ void MergeSortedList(List *lst1, List *lst2) {
 			insert_pos->next = lst2_node;
 
 			lst1->size ++;
+			j--;
+
+			lst2_node = lst2->header->next;
 
 		} else {
 			i--; lst1_node = lst1_node->next;
