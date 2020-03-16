@@ -15,8 +15,9 @@ typedef struct SkipList {
 	Node *header;
 } SkipList;
 
-Node* CreateNode(int key, int level);
 SkipList* CreatList(int max_level, float p);
+void ReleaseNode(Node *);
+void ReleaseList(SkipList *lst);
 
 int RandomLevel(SkipList* lst);
 void InsertElem(SkipList* lst, int key);

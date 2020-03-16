@@ -33,9 +33,22 @@ SkipList* CreatList(int max_level, float p) {
 	return lst;
 }
 
+void ReleaseList(SkipList *lst) {
+	Node *current = lst->header->forward[0];
+
+	while (current != NULL) {
+		Node *next = current->forward[0];
+		free(current);
+		current = next;
+	}
+
+	free(lst->header);
+	free(lst);
+}
+
 int RandomLevel(SkipList* lst) {
 	float r = (float)rand() / RAND_MAX; // 得到0-1的数
-	int level = 0;
+	int level = 1;
 
 	while (r < lst->p && level < lst->max_level) {
 		level ++;
@@ -48,16 +61,16 @@ int RandomLevel(SkipList* lst) {
 void InsertElem(SkipList* lst, int key) {
 	Node *current = lst->header;
 	Node **update = NULL;
-	update = (Node **)malloc((lst->max_level + 1) * sizeof(Node *));
+	update = (Node **)malloc(lst->max_level * sizeof(Node *));
 	
 	if (!update) {
 		printf("create update array failed\n");
 		return;
 	} 
 
-	memset(update, 0x0, sizeof(Node *) * (lst->max_level + 1));
+	memset(update, 0x0, sizeof(Node *) * lst->max_level);
 
-	for (int i = lst->level; i >= 0; i--) {
+	for (int i = lst->level - 1; i >= 0; i--) {
 		while (current->forward[i] != NULL &&
 			current->forward[i]->key < key) {
 			current = current->forward[i];
@@ -71,16 +84,17 @@ void InsertElem(SkipList* lst, int key) {
 		current->key != key) {
 		int rlevel = RandomLevel(lst);
 
+		printf("random level: %d\n", rlevel);
 		if (rlevel > lst->level) {
-			for (int i = lst->level + 1; i < rlevel; ++i) {
+			for (int i = lst->level; i < rlevel; ++i) {
 				update[i] = lst->header;
 			}
 
 			lst->level = rlevel;
 		}
 
-		Node *n = CreateNode(key, lst->level);
-		for (int i = 0; i <= rlevel; i++) {
+		Node *n = CreateNode(key, rlevel);
+		for (int i = 0; i < rlevel; i++) {
 			n->forward[i] = update[i]->forward[i];
 			update[i]->forward[i] = n;
 		}
@@ -92,16 +106,16 @@ void InsertElem(SkipList* lst, int key) {
 void DeleteElem(SkipList* lst, int key) {
 	Node *current = lst->header;
 	Node **update = NULL;
-	update = (Node **)malloc((lst->max_level + 1)* sizeof(Node *));
+	update = (Node **)malloc(lst->max_level* sizeof(Node *));
 	
 	if (!update) {
 		printf("create update array failed\n");
 		return;
 	} 
 
-	memset(update, 0x0, sizeof(Node *) * (lst->max_level + 1));
+	memset(update, 0x0, sizeof(Node *) * lst->max_level);
 
-	for (int i = lst->level; i >= 0; i--) {
+	for (int i = lst->level - 1; i >= 0; i--) {
 		while (current->forward[i] != NULL &&
 			current->forward[i]->key < key) {
 			current = current->forward[i];
@@ -114,7 +128,7 @@ void DeleteElem(SkipList* lst, int key) {
 
 	if (current != NULL &&
 		current->key == key) {
-		for (int i = 0; i <= lst->level; i++) {
+		for (int i = 0; i < lst->level; i++) {
 			if (update[i]->forward[i] != current) {
 				break;
 			}
@@ -125,8 +139,8 @@ void DeleteElem(SkipList* lst, int key) {
 
 	free(current);
 
-	while (lst->level > 0 &&
-		lst->header->forward[lst->level] == 0) {
+	while (lst->level - 1 > 0 &&
+		lst->header->forward[lst->level - 1] == 0) {
 		lst->level --;
 	}
 
@@ -135,7 +149,7 @@ void DeleteElem(SkipList* lst, int key) {
 
 void SearchElem(SkipList *lst, int key) {
 	Node *current = lst->header;
-	for (int i = lst->level; i >= 0; i--) {
+	for (int i = lst->level - 1; i >= 0; i--) {
 		while (current->forward[i] != NULL &&
 			current->forward[i]->key < key) {
 			current = current->forward[i];
@@ -152,12 +166,12 @@ void SearchElem(SkipList *lst, int key) {
 
 void DisplayList(SkipList *lst) {
 	printf("\t skiplist \n");
-	for (int i = lst->level; i >= 0; i--) {
+	for (int i = lst->level - 1; i >= 0; i--) {
 		Node *node = lst->header->forward[i];
-		printf("level: %d\n", i);
+		printf("level: %d\n", i + 1);
 
 		while (node != NULL) {
-			printf("%d \n", node->key);
+			printf("%d ", node->key);
 			node = node->forward[i];
 		}
 

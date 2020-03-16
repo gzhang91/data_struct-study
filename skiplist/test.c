@@ -24,5 +24,15 @@ int main() {
 	InsertElem(lst, 60);
 	DisplayList(lst);
 
+	printf("delete: \n");
+	DeleteElem(lst, 3);
+	DeleteElem(lst, 60);
+	DisplayList(lst);
+
+	SearchElem(lst, 6);
+	SearchElem(lst, 21);
+
+	ReleaseList(lst);
+	printf("operate ok\n");
 	return 0;
 }
