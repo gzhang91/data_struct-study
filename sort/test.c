@@ -5,7 +5,7 @@
 #include "sort.h"
 
 #define SMALL_SIZE 10
-#define HUGE_SIZE 100000
+#define HUGE_SIZE 10000
 
 void PrintSort(Data data[], int size) {
 	for (int i = 0; i < size; i++) {
@@ -14,10 +14,12 @@ void PrintSort(Data data[], int size) {
 	printf("\n");
 }
 
-void Generator(Data *d_bubble, Data *d_insert, Data *d_select, int size) {
+void Generator(Data *d_bubble, Data *d_insert, Data *d_select, Data *d_merge, Data *d_quick, int size) {
 	memset(d_bubble, 0x0, sizeof(Data) * SMALL_SIZE);
 	memset(d_insert, 0x0, sizeof(Data) * SMALL_SIZE);
 	memset(d_select, 0x0, sizeof(Data) * SMALL_SIZE);
+	memset(d_merge, 0x0, sizeof(Data) * SMALL_SIZE);
+	memset(d_quick, 0x0, sizeof(Data) * SMALL_SIZE);
 
 	for (int i = 0; i < size; i++) {
 		int val = rand() % 100000;
@@ -32,17 +34,25 @@ void Generator(Data *d_bubble, Data *d_insert, Data *d_select, int size) {
 		
 		d_select[i].hash_key = val;
 		memcpy(d_select[i].data, data, sizeof(data) - 1);
+
+		d_merge[i].hash_key = val;
+		memcpy(d_merge[i].data, data, sizeof(data) - 1);
+		
+		d_quick[i].hash_key = val;
+		memcpy(d_quick[i].data, data, sizeof(data) - 1);
 	}
 }
 
 int main() {
 	srand(time(0));
 
-	Data *d_bubble, *d_insert, *d_select;
+	Data *d_bubble, *d_insert, *d_select, *d_merge, *d_quick;
 	d_bubble = (Data *)malloc(sizeof(Data) * SMALL_SIZE);
 	d_insert = (Data *)malloc(sizeof(Data) * SMALL_SIZE);
 	d_select = (Data *)malloc(sizeof(Data) * SMALL_SIZE);
-	Generator(d_bubble, d_insert, d_select, SMALL_SIZE);
+	d_merge = (Data *)malloc(sizeof(Data) * SMALL_SIZE);
+	d_quick = (Data *)malloc(sizeof(Data) * SMALL_SIZE);
+	Generator(d_bubble, d_insert, d_select, d_merge, d_quick, SMALL_SIZE);
 
 	printf("排序前: \n");
 	printf("冒泡排序: ");
@@ -51,10 +61,16 @@ int main() {
 	PrintSort(d_insert, SMALL_SIZE);
 	printf("选择排序: ");
 	PrintSort(d_select, SMALL_SIZE);
+	printf("归并排序: ");
+	PrintSort(d_merge, SMALL_SIZE);
+	printf("快速排序: ");
+	PrintSort(d_quick, SMALL_SIZE);
 
 	bubble_sort(d_bubble, SMALL_SIZE);
 	insert_sort(d_insert, SMALL_SIZE);
 	select_sort(d_select, SMALL_SIZE);
+	merge_sort(d_merge, SMALL_SIZE);
+	quick_sort(d_quick, SMALL_SIZE);
 
 	printf("排序后: \n");
 	printf("冒泡排序: ");
@@ -63,18 +79,27 @@ int main() {
 	PrintSort(d_insert, SMALL_SIZE);
 	printf("选择排序: ");
 	PrintSort(d_select, SMALL_SIZE);
+	printf("归并排序: ");
+	PrintSort(d_merge, SMALL_SIZE);
+	printf("快速排序: ");
+	PrintSort(d_quick, SMALL_SIZE);
 	free(d_bubble);
 	free(d_insert);
-	free(d_select);
+	free(d_select); 
+	free(d_merge);
+	free(d_quick);
 
-	printf("进行性能测试: \n");
 	d_bubble = (Data *)malloc(sizeof(Data) * HUGE_SIZE);
 	d_insert = (Data *)malloc(sizeof(Data) * HUGE_SIZE);
 	d_select = (Data *)malloc(sizeof(Data) * HUGE_SIZE);
-	Generator(d_bubble, d_insert, d_select, HUGE_SIZE);
+	d_merge = (Data *)malloc(sizeof(Data) * HUGE_SIZE);
+	d_quick = (Data *)malloc(sizeof(Data) * HUGE_SIZE);
+	Generator(d_bubble, d_insert, d_select, d_merge, d_quick, HUGE_SIZE);
 
 	time_t b_begin_time, b_end_time, i_begin_time, i_end_time, s_begin_time, s_end_time;
+	time_t m_begin_time, m_end_time, q_begin_time, q_end_time;
 
+	printf("开始压力测试: \n");
 	b_begin_time = time(NULL);
 	bubble_sort(d_bubble, HUGE_SIZE);
 	b_end_time = time(NULL);
@@ -87,13 +112,25 @@ int main() {
 	select_sort(d_select, HUGE_SIZE);
 	s_end_time = time(NULL);
 
-	printf("冒泡排序(%ld), 插入排序(%ld), 选择排序(%ld)\n", 
+	m_begin_time = time(NULL);
+	merge_sort(d_merge, HUGE_SIZE);
+	m_end_time = time(NULL);
+
+	q_begin_time = time(NULL);
+	quick_sort(d_quick, HUGE_SIZE);
+	q_end_time = time(NULL);
+
+	printf("冒泡排序(%ld), 插入排序(%ld), 选择排序(%ld), 归并排序(%ld), 快速排序(%ld)\n", 
 		b_end_time - b_begin_time,
 		i_end_time - i_begin_time,
-		s_end_time - s_begin_time);
+		s_end_time - s_begin_time,
+		m_end_time - m_begin_time,
+		q_end_time - q_begin_time);
 	free(d_bubble);
 	free(d_insert);
 	free(d_select);
+	free(d_merge);
+	free(d_quick);
 
 	return 0;
 }

@@ -22,8 +22,18 @@ static void Swap(Data *d1, Data *d2) {
 	Assign(&tmp, d2);
 }
 
+// O(n^2)
 void bubble_sort(Data d[], size_t d_len);
 void insert_sort(Data d[], size_t d_len);
 void select_sort(Data d[], size_t d_len);
+
+// O(nlogn)
+void merge_sort(Data d[], size_t d_len);
+void quick_sort(Data d[], size_t d_len);
+
+// O(n)
+void bucket_sort(Data d[], size_t d_len);
+void count_sort(Data d[], size_t d_len);
+void radix_sort(Data d[], size_t d_len);
 
 #endif // _SORT_H_
