@@ -148,8 +148,10 @@ void quick_sort_elem(Data d[], int begin, int end) {
 			j--;
 		}
 
-		if (i < j) {
+		if (i <= j) {
 			Swap(&d[i], &d[j]);
+			i++;
+			j--;
 		}
 	}
 

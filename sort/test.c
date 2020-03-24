@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <sys/time.h>
 #include "sort.h"
 
 #define SMALL_SIZE 10
-#define HUGE_SIZE 10000
+#define HUGE_SIZE 100000
 
 void PrintSort(Data data[], int size) {
 	for (int i = 0; i < size; i++) {
@@ -96,36 +97,45 @@ int main() {
 	d_quick = (Data *)malloc(sizeof(Data) * HUGE_SIZE);
 	Generator(d_bubble, d_insert, d_select, d_merge, d_quick, HUGE_SIZE);
 
-	time_t b_begin_time, b_end_time, i_begin_time, i_end_time, s_begin_time, s_end_time;
-	time_t m_begin_time, m_end_time, q_begin_time, q_end_time;
+	struct timeval b_begin_time, b_end_time, i_begin_time, i_end_time, s_begin_time, s_end_time;
+	struct timeval m_begin_time, m_end_time, q_begin_time, q_end_time;
 
 	printf("开始压力测试: \n");
-	b_begin_time = time(NULL);
+	gettimeofday(&b_begin_time, NULL);
 	bubble_sort(d_bubble, HUGE_SIZE);
-	b_end_time = time(NULL);
+	gettimeofday(&b_end_time, NULL);
+	//b_end_time = time(NULL);
 
-	i_begin_time = time(NULL);
+	//i_begin_time = time(NULL);
+	gettimeofday(&i_begin_time, NULL);
 	insert_sort(d_insert, HUGE_SIZE);
-	i_end_time = time(NULL);
+	gettimeofday(&i_end_time, NULL);
+	//i_end_time = time(NULL);
 
-	s_begin_time = time(NULL);
+	//s_begin_time = time(NULL);
+	gettimeofday(&s_begin_time, NULL);
 	select_sort(d_select, HUGE_SIZE);
-	s_end_time = time(NULL);
+	gettimeofday(&s_end_time, NULL);
+	//s_end_time = time(NULL);
 
-	m_begin_time = time(NULL);
+	//m_begin_time = time(NULL);
+	gettimeofday(&m_begin_time, NULL);
 	merge_sort(d_merge, HUGE_SIZE);
-	m_end_time = time(NULL);
+	gettimeofday(&m_end_time, NULL);
+	//m_end_time = time(NULL);
 
-	q_begin_time = time(NULL);
+	//q_begin_time = time(NULL);
+	gettimeofday(&q_begin_time, NULL);
 	quick_sort(d_quick, HUGE_SIZE);
-	q_end_time = time(NULL);
+	gettimeofday(&q_end_time, NULL);
+	//q_end_time = time(NULL);
 
 	printf("冒泡排序(%ld), 插入排序(%ld), 选择排序(%ld), 归并排序(%ld), 快速排序(%ld)\n", 
-		b_end_time - b_begin_time,
-		i_end_time - i_begin_time,
-		s_end_time - s_begin_time,
-		m_end_time - m_begin_time,
-		q_end_time - q_begin_time);
+		( b_end_time.tv_sec * 1000 + b_end_time.tv_usec) - (b_begin_time.tv_sec * 1000 + b_begin_time.tv_usec),
+		(i_end_time.tv_sec * 1000 + i_end_time.tv_usec) - (i_begin_time.tv_sec * 1000 + i_begin_time.tv_usec),
+		(s_end_time.tv_sec * 1000 + s_end_time.tv_usec) - (s_begin_time.tv_sec * 1000 + s_begin_time.tv_usec),
+		(m_end_time.tv_sec * 1000 + m_end_time.tv_usec) - (m_begin_time.tv_sec * 1000 + m_begin_time.tv_usec),
+		(q_end_time.tv_sec * 1000 + q_end_time.tv_usec)  - (q_begin_time.tv_sec * 1000 + q_begin_time.tv_usec));
 	free(d_bubble);
 	free(d_insert);
 	free(d_select);
