@@ -60,7 +60,7 @@ void merge(Data d[], int begin, int end) {
 		printf("malloc failed\n");
 		abort();
 	}
-	memset(tmp, 0x0, (end - begin) * sizeof(Data));
+	memset(tmp, 0x0, (end - begin + 1) * sizeof(Data));
 
 	int k = 0;
 	int i = begin, j = mid + 1;
@@ -82,9 +82,10 @@ void merge(Data d[], int begin, int end) {
 		Assign(&d[j++], &tmp[k++]);
 	}
 
-	for (i = begin, j = 0; i <= end; i++, j++) {
+	memcpy(&d[begin], tmp, (end - begin + 1) * sizeof(Data));
+	/*for (i = begin, j = 0; i <= end; i++, j++) {
 		Assign(&tmp[j], &d[i]);
-	}
+	}*/
 
 	free(tmp);
 	tmp = NULL;

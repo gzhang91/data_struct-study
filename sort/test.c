@@ -6,7 +6,7 @@
 #include "sort.h"
 
 #define SMALL_SIZE 10
-#define HUGE_SIZE 100000
+#define HUGE_SIZE 1000000
 
 void PrintSort(Data data[], int size) {
 	for (int i = 0; i < size; i++) {
@@ -102,7 +102,7 @@ int main() {
 
 	printf("开始压力测试: \n");
 	gettimeofday(&b_begin_time, NULL);
-	bubble_sort(d_bubble, HUGE_SIZE);
+	//bubble_sort(d_bubble, HUGE_SIZE);
 	gettimeofday(&b_end_time, NULL);
 	//b_end_time = time(NULL);
 
@@ -131,11 +131,11 @@ int main() {
 	//q_end_time = time(NULL);
 
 	printf("冒泡排序(%ld), 插入排序(%ld), 选择排序(%ld), 归并排序(%ld), 快速排序(%ld)\n", 
-		( b_end_time.tv_sec * 1000 + b_end_time.tv_usec) - (b_begin_time.tv_sec * 1000 + b_begin_time.tv_usec),
-		(i_end_time.tv_sec * 1000 + i_end_time.tv_usec) - (i_begin_time.tv_sec * 1000 + i_begin_time.tv_usec),
-		(s_end_time.tv_sec * 1000 + s_end_time.tv_usec) - (s_begin_time.tv_sec * 1000 + s_begin_time.tv_usec),
-		(m_end_time.tv_sec * 1000 + m_end_time.tv_usec) - (m_begin_time.tv_sec * 1000 + m_begin_time.tv_usec),
-		(q_end_time.tv_sec * 1000 + q_end_time.tv_usec)  - (q_begin_time.tv_sec * 1000 + q_begin_time.tv_usec));
+		(b_end_time.tv_sec * 1000 + b_end_time.tv_usec / 1000) - (b_begin_time.tv_sec * 1000 + b_begin_time.tv_usec / 1000),
+		(i_end_time.tv_sec * 1000 + i_end_time.tv_usec / 1000) - (i_begin_time.tv_sec * 1000 + i_begin_time.tv_usec / 1000),
+		(s_end_time.tv_sec * 1000 + s_end_time.tv_usec / 1000) - (s_begin_time.tv_sec * 1000 + s_begin_time.tv_usec / 1000),
+		(m_end_time.tv_sec * 1000 + m_end_time.tv_usec / 1000) - (m_begin_time.tv_sec * 1000 + m_begin_time.tv_usec / 1000),
+		(q_end_time.tv_sec * 1000 + q_end_time.tv_usec / 1000) - (q_begin_time.tv_sec * 1000 + q_begin_time.tv_usec / 1000));
 	free(d_bubble);
 	free(d_insert);
 	free(d_select);
