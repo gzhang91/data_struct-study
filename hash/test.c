@@ -72,6 +72,11 @@ int main() {
 	printf("删除后\n");
 	PrintList(link_hash);
 
+	printf("更新后\n");
+	d1 = 8;
+	LinkHashUpdate(link_hash, &d1);
+	PrintList(link_hash);
+
 	LinkHashRelease(link_hash);
 
 	return 0;

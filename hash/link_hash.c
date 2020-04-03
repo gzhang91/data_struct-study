@@ -133,11 +133,11 @@ int LinkHashDelete(LinkHash *link_hash, void *data) {
 	prev->hnext = curr->hnext;
 
 	// 更改double link的指针
-	prev->next = curr->next;
+	curr->prev->next = curr->next;
 	if (curr == link_hash->dlist->tailer) {
 		link_hash->dlist->tailer = prev;
 	} else {
-		curr->next->prev = prev;
+		curr->next->prev = curr->prev;
 	}
 	NodeDelete(curr);
 
@@ -163,7 +163,7 @@ void PrintList(LinkHash *link_hash) {
 		return;
 	}
 
-	printf("打印列表: \n");
+	printf("打印列表(hash): \n");
 	for (int i = 0; i < INIT_BUCKET_SIZE; i++) {
 		if (link_hash->bucket[i].hnext) {
 			printf("index[%d] ", i);
@@ -175,4 +175,12 @@ void PrintList(LinkHash *link_hash) {
 			printf("\n");
 		}
 	}
+
+	printf("打印列表(double link): \n");
+	DNode * curr = link_hash->dlist->header->next;
+	while (curr) {
+		curr->print_data(curr->data);
+		curr = curr->next;
+	}
+	printf("\n");
 }
