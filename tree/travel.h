@@ -3,6 +3,7 @@
 
 typedef struct TNode {
 	int *data;
+	int *visited;
 	struct TNode *left;
 	struct TNode *right;
 } TNode;
@@ -20,5 +21,6 @@ void PostOrderRecurse(BTree root);
 void PreOrderNoRecurse(BTree root);
 void InorderNoRecurse(BTree root);
 void PostOrderNoRecurse(BTree root);
+void PostOrderNoRecurse1(BTree root);
 
 #endif // _TRAVEL_H_

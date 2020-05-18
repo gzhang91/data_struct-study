@@ -16,11 +16,25 @@ Stack *StackCreate(int size, int n) {
 	stack->top = -1;
 }
 
+int StackEmpty(Stack *st) {
+	return st->top < 0;
+}
+
 void StackRelease(Stack *st) {
 	if (st) {
 		free(st);
 		free(st->data);
 	}
+}
+
+int StackTop(Stack *st, void *data) {
+	if (st->top < 0) {
+		printf("栈已经空了\n");
+		return 0;
+	}
+
+	memcpy(data, st->data + st->top * st->size, st->size);
+	return 1;
 }
 
 int StackPush(Stack *st, const void *data) {

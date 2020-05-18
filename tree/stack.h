@@ -11,8 +11,13 @@ typedef struct Stack {
 // 初始化栈
 Stack *StackCreate(int size, int n);
 
+int StackEmpty(Stack *st) ;
+
 // 释放栈
 void StackRelease(Stack *st);
+
+// 得到顶端元素
+int StackTop(Stack *st, void *data);
 
 // 入栈
 int StackPush(Stack *st, const void *data);
