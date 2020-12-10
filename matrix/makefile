@@ -1,7 +1,7 @@
 # makefile
 
 matrix_test: test.c matrix.c 
-	gcc -g -o $@s $^
+	gcc -g -o $@ $^
 
 
 clean:
