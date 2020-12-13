@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "travel.h"
-
+#include "tree.h"
 
 int main() {
 	int src[] = { 4, 8, 1, 2, 10, 32, 9, 15 };
@@ -35,6 +34,22 @@ int main() {
 
 	printf("后根遍历(非递归): ");
 	PostOrderNoRecurse1(root);
+	printf("\n");
+
+	printf("========================\n");
+	BTree copy = CreatTree(NULL, 0);
+	CopyTree(root, &copy);
+
+	printf("拷贝后先根遍历: ");
+	PreOrderRecurse(copy);
+	printf("\n");
+
+	printf("========================\n");
+	BTree image = CreatTree(NULL, 0);
+	ImageTree(root, &image);
+
+	printf("镜像后先根遍历: ");
+	PreOrderRecurse(image);
 	printf("\n");
 
 	return 0;
