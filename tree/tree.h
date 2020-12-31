@@ -1,5 +1,9 @@
-#ifndef _TRAVEL_H_
-#define _TRAVEL_H_
+#ifndef _TREE_H_
+#define _TREE_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct TNode {
 	int *data;
@@ -23,4 +27,11 @@ void InorderNoRecurse(BTree root);
 void PostOrderNoRecurse(BTree root);
 void PostOrderNoRecurse1(BTree root);
 
-#endif // _TRAVEL_H_
+// copy
+void CopyTree(BTree root, BTree *copy);
+void CopyNode(TNode *node, TNode **copy_node);
+// image
+void ImageTree(BTree root, BTree *image);
+void ImageNode(TNode *node, TNode **image_node);
+
+#endif // _TREE_H_
