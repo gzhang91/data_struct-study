@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "queue.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -168,4 +169,194 @@ void GraphShow(Graph *g) {
 		printf("->Nil \n");
 	}
 
+}
+
+//---------------------------------------------
+// 获取邻接点
+LinkNode* GetStartNeiborNode(Graph *g, int index) {
+	LinkNode *begin = NULL;
+	if (g->inode[index].link) {
+		begin = g->inode[index].link;
+	}
+	return begin;
+}
+
+void GetNextNeiborNode(Graph *g, LinkNode *prev, LinkNode **next) {
+	*next = NULL;
+	if (prev && prev->next) {
+		*next = prev->next;
+	}
+}
+
+void DFS_handler(Graph *g, int index, int *visit) {
+	if (!g) {
+		return;
+	}
+
+	if (visit[index] != 1) {
+		printf("%c->", GraphGetNodeByIndex(g, index));
+		visit[index] = 1;
+	}
+
+	LinkNode *start = GetStartNeiborNode(g, index);
+	LinkNode *next = NULL;
+	while (start) {
+		if (visit[start->idx] != 1) {
+			printf("%c->", GraphGetNodeByIndex(g, start->idx));
+			visit[start->idx] = 1;
+			DFS_handler(g, start->idx, visit);
+		}
+		
+		GetNextNeiborNode(g, start, &next);
+		start = next;
+	}
+}
+
+// 计算连通分量
+void CalcConnectedComponent(Graph *g) {
+	if (!g) {
+		return;
+	}
+
+	int *visit = (int *)malloc(g->num_of_nodes * sizeof(int));
+	if (visit == NULL) {
+		return;
+	}
+	memset(visit, 0x0, g->num_of_nodes * sizeof(int));
+
+	int count = 0; // 计算连通分量
+	for (int i = 0; i < g->num_of_nodes; i++) {
+		if (!visit[i]) {
+			count++;
+			DFS_handler(g, i, visit);
+			printf("Nil\n");
+		}
+	}
+
+	
+}
+
+void DFSTravel(Graph *g) {
+	if (!g) {
+		return;
+	}
+
+	int *visit = (int *)malloc(g->num_of_nodes * sizeof(int));
+	if (visit == NULL) {
+		return;
+	}
+	memset(visit, 0x0, g->num_of_nodes * sizeof(int));
+
+	for (int i = 0; i < g->num_of_nodes; ++i) {
+		if (!visit[i]) {
+			DFS_handler(g, i, visit);
+			printf("Nil\n");
+		}
+	}
+	
+	
+}
+
+// 深度优先
+void DFS(Graph *g, Vectex start_v) {
+	if (!g) {
+		return;
+	}
+
+	int idx = GraphGetNodeIndex(g, start_v);
+	if (idx == -1) {
+		return;
+	}
+
+	int *visit = (int *)malloc(g->num_of_nodes * sizeof(int));
+	if (visit == NULL) {
+		return;
+	}
+	memset(visit, 0x0, g->num_of_nodes * sizeof(int));
+
+	DFS_handler(g, idx, visit);
+
+	printf("Nil\n");
+}
+
+void BFS_handler(Graph *g, int index, int *visit) {
+	if (!g) {
+		return;
+	}
+
+	if (visit[index] != 1) {
+		printf("%c->", GraphGetNodeByIndex(g, index));
+		visit[index] = 1;
+	}
+
+	Queue *queue = QueueCreate(sizeof(LinkNode *), g->num_of_nodes);
+	LinkNode *node = (LinkNode *)malloc(sizeof(LinkNode *));
+	node->idx = index;
+	node->next = g->inode[index].link;
+	node->weight = 1;
+	QueueEn(queue, &node);
+
+	LinkNode *start = NULL;
+	LinkNode *next = NULL;
+	while (!QueueEmpty(queue)) {
+		QueueDe(queue, &start);
+	
+		start = GetStartNeiborNode(g, start->idx);
+		while (start) {
+			if (visit[start->idx] != 1) {
+				printf("%c->", GraphGetNodeByIndex(g, start->idx));
+				QueueEn(queue, &start);
+				visit[start->idx] = 1;
+			}
+			
+			GetNextNeiborNode(g, start, &next);
+			start = next;
+		}
+	}
+
+	free(node);
+	QueueRelease(queue);
+}
+
+// 广度遍历，全图
+void BFSTravel(Graph *g) {
+	if (!g) {
+		return;
+	}
+
+	int *visit = (int *)malloc(g->num_of_nodes * sizeof(int));
+	if (visit == NULL) {
+		return;
+	}
+	memset(visit, 0x0, g->num_of_nodes * sizeof(int));
+
+	for (int i = 0; i < g->num_of_nodes; ++i) {
+		if (!visit[i]) {
+			BFS_handler(g, i, visit);
+			printf("Nil\n");
+		}
+	}
+	
+	
+}
+
+// 广度优先
+void BFS(Graph *g, Vectex start_v) {
+	if (!g) {
+		return;
+	}
+
+	int idx = GraphGetNodeIndex(g, start_v);
+	if (idx == -1) {
+		return;
+	}
+
+	int *visit = (int *)malloc(g->num_of_nodes * sizeof(int));
+	if (visit == NULL) {
+		return;
+	}
+	memset(visit, 0x0, g->num_of_nodes * sizeof(int));
+
+	BFS_handler(g, idx, visit);
+	printf("Nil\n");
 }

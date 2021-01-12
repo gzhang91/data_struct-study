@@ -55,12 +55,32 @@ typedef struct graph_s Graph;
 Graph* GraphInit(int is_dag, size_t size);
 int GraphInsertNode(Graph *g, Vectex v);
 int GraphInsertEdge(Graph *g, Edge e);
-
 void GraphDestroy(Graph *g);
-
 int GraphGetNodeIndex(Graph *g, Vectex v);
 Vectex GraphGetNodeByIndex(Graph *g, int index);
-
 void GraphShow(Graph *g);
+
+// 深度优先
+void DFSTravel(Graph *g);
+void DFS(Graph *g, Vectex start_v);
+// 广度优先
+void BFSTravel(Graph *g);
+void BFS(Graph *g, Vectex start_v);
+
+void CalcConnectedComponent(Graph *g);
+
+// 应用 =================
+// 最小生成树
+void MST_Prime(Graph *g);
+void MST_Krus();
+
+// 拓扑排序
+void TopolySort();
+
+// 关键路径
+void LongestPath();
+
+// 最短路径
+void ShortestPath();
 
 #endif // !_GRAPH_H_
